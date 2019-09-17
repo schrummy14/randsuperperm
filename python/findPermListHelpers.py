@@ -1,6 +1,7 @@
 
 from itertools import permutations
 import random
+from tqdm import tqdm
 
 def getPerms(N):
     perms = list(permutations(range(1, N+1))) 
@@ -41,7 +42,7 @@ def findPermList(N, numTries):
             res.append(k)
     recordLength = len(res)
 
-    for k in range(numTries):
+    for k in tqdm(range(numTries)):
         curRes = randPermList(posPerms.copy())
         curResLength = len(curRes)
         if curResLength < recordLength:
