@@ -22,11 +22,22 @@ def randPermListSmart(posPerms):
         for perm in posPerms:
             if list(perm[0:(N-1)]) == res[-(N-1):]:
                 posID.append(kk)
-                print("Hi")
             kk += 1
         if len(posID) > 0:
-            newVal = posPerms[posID[random.randint(0,len(posID)-1)]][-1]
-            res.append(newVal)
+            newID = posID[random.randint(0,len(posID)-1)]
+            newVal = posPerms[newID][-1]
+            posPerms.remove(posPerms[newID])
+        else:
+            oldVal = res[-1]
+            while True:
+                newVal = random.randint(1,N)
+                if newVal != oldVal:
+                    break
+        res.append(newVal)
+        numPosPerms = len(posPerms)
+        if numPosPerms == 0:
+            done = True
+    return res
             
 
 def randPermList(posPerms):

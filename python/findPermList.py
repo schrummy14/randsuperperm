@@ -3,9 +3,9 @@ from joblib import Parallel, delayed
 from findPermListHelpers import *
 import time
 
-numCores = 1
-N = 4
-numTries = 200000
+numCores = 2
+N = 6
+numTries = 500
 
 timeStart = time.time()
 if numCores > 1:
