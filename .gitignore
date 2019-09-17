@@ -1,3 +1,4 @@
 python/.vscode
 python/__pycache__
 python/*.pyc
+python/*.sh
