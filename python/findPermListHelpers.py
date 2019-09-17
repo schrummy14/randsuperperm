@@ -7,6 +7,28 @@ def getPerms(N):
     perms = list(permutations(range(1, N+1))) 
     return perms
 
+def randPermListSmart(posPerms):
+    res = list(posPerms[0])
+    posPerms.remove(tuple(res))
+    N = res[-1]
+    done = False
+    numPosPerms = len(posPerms)
+    oldk1 = N
+
+    while not done:
+        # Find possible next perms
+        posID = []
+        kk = 0
+        for perm in posPerms:
+            if list(perm[0:(N-1)]) == res[-(N-1):]:
+                posID.append(kk)
+                print("Hi")
+            kk += 1
+        if len(posID) > 0:
+            newVal = posPerms[posID[random.randint(0,len(posID)-1)]][-1]
+            res.append(newVal)
+            
+
 def randPermList(posPerms):
     res = list(posPerms[0])
     posPerms.remove(tuple(res))
@@ -43,7 +65,7 @@ def findPermList(N, numTries):
     recordLength = len(res)
 
     for k in tqdm(range(numTries)):
-        curRes = randPermList(posPerms.copy())
+        curRes = randPermListSmart(posPerms.copy())
         curResLength = len(curRes)
         if curResLength < recordLength:
             recordLength = curResLength

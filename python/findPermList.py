@@ -3,7 +3,7 @@ from joblib import Parallel, delayed
 from findPermListHelpers import *
 import time
 
-numCores = 10
+numCores = 1
 N = 4
 numTries = 200000
 
