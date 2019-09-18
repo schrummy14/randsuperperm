@@ -66,7 +66,7 @@ def randPermList(posPerms):
     
     return res
 
-def findPermList(N, numTries):
+def findPermList(N, numTries, coreID):
     posPerms = getPerms(N)
 
     res = []
@@ -81,4 +81,10 @@ def findPermList(N, numTries):
         if curResLength < recordLength:
             recordLength = curResLength
             res = curRes
+            write2file(res, recordLength, coreID)
     return res
+
+def write2file(res, resLength, coreID):
+    with open("resProc" + str(coreID) + ".txt","w") as f:
+        f.write(str(resLength) + "\n")
+        f.write(str(res) + "\n")
