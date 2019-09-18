@@ -1,10 +1,10 @@
-
+import os
 from itertools import permutations
 import random
 from tqdm import tqdm
 
 def getPerms(N):
-    perms = list(permutations(range(1, N+1))) 
+    perms = list(permutations(range(1, N+1)))
     return perms
 
 def randPermListSmart(posPerms):
@@ -38,7 +38,6 @@ def randPermListSmart(posPerms):
         if numPosPerms == 0:
             done = True
     return res
-            
 
 def randPermList(posPerms):
     res = list(posPerms[0])
@@ -63,28 +62,61 @@ def randPermList(posPerms):
         numPosPerms = len(posPerms)
         if numPosPerms == 0:
             done = True
-    
+
     return res
 
 def findPermList(N, numTries, coreID):
     posPerms = getPerms(N)
 
-    res = []
-    for perm in posPerms:
-        for k in perm:
-            res.append(k)
+    if os.path.exists("resProc" + str(coreID) + ".txt"):
+        res = getFromFile(N, coreID)
+        if len(res) == 0:
+            res = buildResFromPerms(posPerms)
+    else:
+        res = buildResFromPerms(posPerms)
     recordLength = len(res)
 
     for k in tqdm(range(numTries)):
         curRes = randPermListSmart(posPerms.copy())
+#        curRes = randPermList(posPerms.copy())
         curResLength = len(curRes)
         if curResLength < recordLength:
             recordLength = curResLength
+            print("Core " + str(coreID) + ": " + str(recordLength))
             res = curRes
             write2file(res, recordLength, coreID)
     return res
 
 def write2file(res, resLength, coreID):
     with open("resProc" + str(coreID) + ".txt","w") as f:
-        f.write(str(resLength) + "\n")
+        f.write("N = " + str(max(res)) + ", Superperm Length = " + str(resLength) + "\n")
         f.write(str(res) + "\n")
+
+def buildResFromPerms(perms):
+    res = []
+    for perm in perms:
+        for k in perm:
+            res.append(k)
+    return res
+
+def getFromFile(N, coreID):
+
+    with open("resProc" + str(coreID) + ".txt", "r") as f:
+        line = f.readline()
+        lineSplit = line.split(",")
+        lineSplit = lineSplit[0].split("=")
+        fileN = int(lineSplit[1])
+        if N != fileN:
+            return []
+        line = f.readline()
+
+    line = line.rstrip('\n')
+    res = []
+    for k in line:
+        if k == '[' or k == ',' or k == ' ':
+            continue
+        if k == ']':
+            break
+        res.append(int(k))
+
+    return res
